@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "836012490237",
+    "project_id": "finsight-flutter",
+    "storage_bucket": "finsight-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836012490237:android:a494d09fafc69e6e23ed94",
+        "android_client_info": {
+          "package_name": "com.example.finsight"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDRqZN3XJcOyvdsnxgxB4nXm5VNygStuE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
