@@ -1,4 +1,4 @@
-# finsight
+# FinSight
 
 A new Flutter project.
 
