@@ -1,3 +1,5 @@
+import 'package:finsight/main.dart';
+import 'package:finsight/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,7 +13,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       body:  Center(
+      body: Center(
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
@@ -26,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white70)),
+                      color: Colors.white)),
               const SizedBox(height: 15),
               const TextField(
                 decoration: InputDecoration(
@@ -38,18 +40,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    borderSide: BorderSide(
-                        color: Colors
-                            .cyanAccent),
+                    borderSide: BorderSide(color: Colors.blue),
                   ),
-                  prefixIcon: Icon(Icons.email),
+                  prefixIcon: Icon(Icons.email,color: Colors.white),
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 15),
               const TextField(
                 decoration: InputDecoration(
-                  label: Text('Password', style: TextStyle(color: Colors.white)),
+                  label:
+                      Text('Password', style: TextStyle(color: Colors.white)),
                   filled: true,
                   fillColor: Colors.transparent,
                   border: OutlineInputBorder(
@@ -57,12 +58,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    borderSide: BorderSide(                        
+                    borderSide: BorderSide(
                         color: Colors
-                            .cyanAccent), // Change this to your desired color
+                            .blue), // Change this to your desired color
                   ),
-                  prefixIcon: Icon(Icons.lock),
-                  suffixIcon: Icon(Icons.visibility),
+                  prefixIcon: Icon(Icons.lock, color: Colors.white),
                 ),
                 obscureText: true,
               ),
@@ -70,18 +70,28 @@ class _LoginScreenState extends State<LoginScreen> {
               Container(
                 width: 300,
                 child: ElevatedButton(
-                  child:
-                      const Text('Login', style: TextStyle(color: Colors.cyanAccent)),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 28, 113, 214)),
+                  child: const Text('Login',
+                      style: TextStyle(color: Colors.white)),
                   onPressed: () {
-                    print('Login button pressed');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomePage()),
+                    );
                   },
                 ),
               ),
               TextButton(
                 child: const Text('Don\'t have an account? Register here',
-                    style: TextStyle(color: Colors.cyanAccent)),
+                    style: TextStyle(color: Color.fromARGB(255, 28, 113, 214))),
                 onPressed: () {
-                  print('Sign up button pressed');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const RegisterScreen()),
+                  );
                 },
               ),
             ],

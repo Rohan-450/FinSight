@@ -1,3 +1,5 @@
+import 'package:finsight/screens/email_verify.dart';
+import 'package:finsight/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -11,7 +13,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       body:  Center(
+      body: Center(
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
@@ -38,31 +40,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    borderSide: BorderSide(
-                        color: Colors
-                            .cyanAccent),
+                    borderSide: BorderSide(color: Colors.blue),
                   ),
-                  prefixIcon: Icon(Icons.email),
+                  prefixIcon: Icon(Icons.email, color: Colors.white),
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 15),
               const TextField(
                 decoration: InputDecoration(
-                  label: Text('Password', style: TextStyle(color: Colors.white)),
+                  label:
+                      Text('Password', style: TextStyle(color: Colors.white)),
                   filled: true,
                   fillColor: Colors.transparent,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    borderSide: BorderSide(                        
-                        color: Colors
-                            .cyanAccent), // Change this to your desired color
-                  ),
-                  prefixIcon: Icon(Icons.lock),
-                  suffixIcon: Icon(Icons.visibility),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      borderSide: BorderSide(
+                          color: Colors
+                              .blue) // Change this to your desired color
+                      ),
+                  prefixIcon: Icon(Icons.lock, color: Colors.white),
                 ),
                 obscureText: true,
               ),
@@ -70,11 +70,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Container(
                 width: 300,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 28, 113, 214)),
-                  child:
-                      const Text('Register', style: TextStyle(color: Colors.white)),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(255, 28, 113, 214)),
+                  child: const Text('Register',
+                      style: TextStyle(color: Colors.white)),
                   onPressed: () {
-                    print('Login button pressed');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const EmailVerification()),
+                    );
                   },
                 ),
               ),
@@ -82,7 +87,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: const Text('Already have an account? Log In',
                     style: TextStyle(color: Color.fromARGB(255, 28, 113, 214))),
                 onPressed: () {
-                  print('Sign up button pressed');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LoginScreen()),
+                  );
                 },
               ),
             ],
