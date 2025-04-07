@@ -1,5 +1,4 @@
-import 'package:finsight/main.dart';
-import 'package:finsight/screens/register_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -10,6 +9,37 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _auth = FirebaseAuth.instance; // Firebase Auth instance
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  // Function to handle user login
+  void _loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      // Navigate to the Home Page after successful login
+      Navigator.pushReplacementNamed(context, '/home');
+    } catch (e) {
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: <Widget>[
               const CircleAvatar(
                 radius: 60,
-                backgroundImage: AssetImage('assets/images/avatar.png'),
+                backgroundImage: AssetImage('assets/icon.png'),
               ),
               const SizedBox(height: 35),
               const Text('Welcome Back..',
@@ -30,8 +60,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontWeight: FontWeight.bold,
                       color: Colors.white)),
               const SizedBox(height: 15),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(
                   label: Text('Email', style: TextStyle(color: Colors.white)),
                   filled: true,
                   fillColor: Colors.transparent,
@@ -42,13 +73,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(color: Colors.blue),
                   ),
-                  prefixIcon: Icon(Icons.email,color: Colors.white),
+                  prefixIcon: Icon(Icons.email, color: Colors.white),
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 15),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: _passwordController,
+                decoration: const InputDecoration(
                   label:
                       Text('Password', style: TextStyle(color: Colors.white)),
                   filled: true,
@@ -67,31 +99,24 @@ class _LoginScreenState extends State<LoginScreen> {
                 obscureText: true,
               ),
               const SizedBox(height: 15),
-              Container(
-                width: 300,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 28, 113, 214)),
-                  child: const Text('Login',
-                      style: TextStyle(color: Colors.white)),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomePage()),
-                    );
-                  },
-                ),
-              ),
+              _isLoading
+                  ? const CircularProgressIndicator() // Show loading indicator while logging in
+                  : Container(
+                      width: 300,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 28, 113, 214)),
+                        child: const Text('Login',
+                            style: TextStyle(color: Colors.white)),
+                        onPressed: _loginUser, // Call the login function
+                      ),
+                    ),
               TextButton(
                 child: const Text('Don\'t have an account? Register here',
                     style: TextStyle(color: Color.fromARGB(255, 28, 113, 214))),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const RegisterScreen()),
-                  );
+                  Navigator.pushNamed(context, '/register');
                 },
               ),
             ],
