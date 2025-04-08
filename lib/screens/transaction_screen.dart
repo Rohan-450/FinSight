@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../database/db_helper.dart';
+
 class TransactionScreen extends StatefulWidget {
   const TransactionScreen({super.key});
 
@@ -12,6 +14,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _subtitleController = TextEditingController();
   String _transactionType = 'Income'; 
+  final DBHelper _dbHelper = DBHelper();
 
   @override
   Widget build(BuildContext context) {
@@ -147,20 +150,31 @@ class _TransactionScreenState extends State<TransactionScreen> {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async{
                   // Save transaction logic here
                   final String amount = _amountController.text;
                   final String title = _titleController.text;
                   final String subtitle = _subtitleController.text;
 
                   if (amount.isNotEmpty && title.isNotEmpty) {
+                    final transaction = {
+                      'title': title,
+                      'subtitle': subtitle,
+                      'amount': double.parse(amount),
+                      'type': _transactionType,
+                      'date': DateTime.now().toString(),
+                    };
+                    await _dbHelper.insertTransaction(transaction);
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content: Text(
-                          'Transaction Saved: $title - $subtitle - $amount ($_transactionType)',
+                          'Transaction Saved!',
                         ),
                       ),
                     );
+                    _amountController.clear();
+                    _titleController.clear();
+                    _subtitleController.clear();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(

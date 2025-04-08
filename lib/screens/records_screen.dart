@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import '../database/db_helper.dart';
+import '../utils/transaction_card.dart';
 
 class RecordScreen extends StatefulWidget {
   const RecordScreen({super.key});
@@ -8,43 +11,58 @@ class RecordScreen extends StatefulWidget {
 }
 
 class _RecordScreenState extends State<RecordScreen> {
-  // Sample data for transactions grouped by month
-  final Map<String, List<Map<String, String>>> transactions = {
-    'January': [
-      {'title': 'Groceries', 'amount': '-50'},
-      {'title': 'Salary', 'amount': '+2000'},
-    ],
-    'February': [
-      {'title': 'Rent', 'amount': '-800'},
-      {'title': 'Freelance', 'amount': '+500'},
-    ],
-    'March': [
-      {'title': 'Electricity Bill', 'amount': '-100'},
-      {'title': 'Bonus', 'amount': '+300'},
-    ],
-  };
-
+  final DBHelper _dbHelper = DBHelper();
+  Map<String, List<Map<String, dynamic>>> transactionsByMonth = {};
   String _searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchTransactions();
+  }
+
+  void fetchTransactions() async {
+    final transactions = await _dbHelper.fetchTransactions();
+
+    // Group transactions by month
+    final groupedTransactions = <String, List<Map<String, dynamic>>>{};
+    for (var transaction in transactions) {
+      final month =
+          DateFormat('MMMM').format(DateTime.parse(transaction['date']));
+      if (!groupedTransactions.containsKey(month)) {
+        groupedTransactions[month] = [];
+      }
+      groupedTransactions[month]!.add(transaction);
+    }
+
+    setState(() {
+      transactionsByMonth = groupedTransactions;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     // Filter transactions based on the search query
-    final filteredTransactions = transactions.map((month, monthTransactions) {
-      final filtered = monthTransactions
-          .where((transaction) => transaction['title']!
-              .toLowerCase()
-              .contains(_searchQuery.toLowerCase()))
-          .toList();
-      return MapEntry(month, filtered);
-    }).entries.where((entry) => entry.value.isNotEmpty).toMap();
+    final filteredTransactions = transactionsByMonth
+        .map((month, monthTransactions) {
+          final filtered = monthTransactions
+              .where((transaction) => transaction['title']!
+                  .toLowerCase()
+                  .contains(_searchQuery.toLowerCase()))
+              .toList();
+          return MapEntry(month, filtered);
+        })
+        .entries
+        .where((entry) => entry.value.isNotEmpty)
+        .toMap();
 
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Search Bar
             const SizedBox(height: 40),
+            // Search Bar
             TextField(
               onChanged: (value) {
                 setState(() {
@@ -76,15 +94,19 @@ class _RecordScreenState extends State<RecordScreen> {
                 itemCount: filteredTransactions.keys.length,
                 itemBuilder: (context, index) {
                   String month = filteredTransactions.keys.elementAt(index);
-                  List<Map<String, String>> monthTransactions =
+                  List<Map<String, dynamic>> monthTransactions =
                       filteredTransactions[month]!;
 
                   // Calculate the total net transaction value for the month
                   double totalNet =
                       monthTransactions.fold(0, (sum, transaction) {
-                    double amount = double.parse(transaction['amount']!
-                        .replaceAll(RegExp(r'[^\d.-]'), ''));
-                    return sum + amount;
+                    double amount = transaction['amount'];
+                    if (transaction['type'] == 'Income') {
+                      return sum + amount; // Add income
+                    } else if (transaction['type'] == 'Expense') {
+                      return sum - amount; // Subtract expense
+                    }
+                    return sum;
                   });
 
                   return Column(
@@ -105,7 +127,7 @@ class _RecordScreenState extends State<RecordScreen> {
                               ),
                             ),
                             Text(
-                              totalNet.toStringAsFixed(2),
+                              '₹${totalNet.toStringAsFixed(2)}',
                               style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold,
@@ -122,40 +144,13 @@ class _RecordScreenState extends State<RecordScreen> {
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: monthTransactions.length,
                         itemBuilder: (context, transactionIndex) {
-                          Map<String, String> transaction =
+                          Map<String, dynamic> transaction =
                               monthTransactions[transactionIndex];
-                          return Card(
-                            color: const Color.fromARGB(255, 21, 20, 57),
-                            margin: const EdgeInsets.only(bottom: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: ListTile(
-                              leading: const CircleAvatar(
-                                backgroundColor: Colors.blue,
-                                child: Icon(
-                                  Icons.attach_money,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              title: Text(
-                                transaction['title']!,
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              ),
-                              trailing: Text(
-                                transaction['amount']!,
-                                style: TextStyle(
-                                    color:
-                                        transaction['amount']!.startsWith('+')
-                                            ? Colors.green
-                                            : Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              ),
-                            ),
+                          return TransactionCard(
+                            title: transaction['title'],
+                            subtitle: transaction['subtitle'] ?? '',
+                            amount: transaction['amount'],
+                            isIncome: transaction['type'] == 'Income',
                           );
                         },
                       ),
@@ -170,6 +165,7 @@ class _RecordScreenState extends State<RecordScreen> {
     );
   }
 }
+
 extension MapFilter<K, V> on Iterable<MapEntry<K, V>> {
   Map<K, V> toMap() => {for (var entry in this) entry.key: entry.value};
 }
