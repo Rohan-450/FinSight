@@ -107,148 +107,162 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final transactionsForMonth = getTransactionsForSelectedMonth();
-    final String todayDate = DateFormat('MMMM d').format(DateTime.now());
+    final String todayDate =
+        DateFormat('MMM d').format(DateTime.now()).toUpperCase();
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 2, 10, 27),
-        elevation: 0,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                DropdownButton<String>(
-                  value: selectedMonth,
-                  dropdownColor: const Color.fromARGB(255, 21, 20, 57),
-                  items: months.map((month) {
-                    return DropdownMenuItem(
-                      value: month,
-                      child: Text(
-                        month,
-                        style: const TextStyle(color: Colors.white,
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      selectedMonth = value!;
-                      updateTotalsForSelectedMonth();
-                    });
-                  },
-                ),
-              ],
-            ),
-            GestureDetector(
-              onTap: () {
-                // Show dialog when the avatar is tapped
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      backgroundColor: const Color.fromARGB(255, 21, 20, 57),
-                      title: const Text(
-                        'Account Options',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      content: const Text(
-                        'Do you want to logout?',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context); // Close the dialog
-                          },
-                          child: const Text(
-                            'Cancel',
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            await FirebaseAuth.instance
-                                .signOut(); // Sign out the user
-                            Navigator.pop(context); // Close the dialog
-                            Navigator.pushReplacementNamed(context, '/login');
-                          },
-                          child: const Text(
-                            'Logout',
-                            style: TextStyle(color: Colors.red),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              child: const CircleAvatar(
-                radius: 20,
-                backgroundImage: AssetImage('assets/icon.png'),
-              ),
-            ),
-          ],
-        ),
-      ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(
+            left: 16.0, right: 16.0, top: 0.0, bottom: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //Monthly Summary Card
             Container(
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 21, 20, 57),
-                borderRadius: BorderRadius.circular(15.0),
+              padding: const EdgeInsets.only(
+                  left: 16.0, right: 16.0, top: 30.0, bottom: 16.0),
+              decoration: const BoxDecoration(
+                color:  Color.fromARGB(255, 21, 20, 57),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20.0),
+                  bottomRight: Radius.circular(20.0),
+                ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Income',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        children: [
+                          DropdownButton<String>(
+                            value: selectedMonth,
+                            dropdownColor:
+                                const Color.fromARGB(255, 21, 20, 57),
+                            items: months.map((month) {
+                              return DropdownMenuItem(
+                                value: month,
+                                child: Text(
+                                  month,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedMonth = value!;
+                                updateTotalsForSelectedMonth();
+                              });
+                            },
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        '\₹${totalIncome.toStringAsFixed(2)}',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
+                      GestureDetector(
+                        onTap: () {
+                          // Show dialog when the avatar is tapped
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 21, 20, 57),
+                                title: const Text(
+                                  'Account Options',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                content: const Text(
+                                  'Do you want to logout?',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(
+                                          context); // Close the dialog
+                                    },
+                                    child: const Text(
+                                      'Cancel',
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      await FirebaseAuth.instance
+                                          .signOut(); // Sign out the user
+                                      Navigator.pop(
+                                          context); // Close the dialog
+                                      Navigator.pushReplacementNamed(
+                                          context, '/login');
+                                    },
+                                    child: const Text(
+                                      'Logout',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: const CircleAvatar(
+                          radius: 20,
+                          backgroundImage: AssetImage('assets/icon.png'),
                         ),
                       ),
                     ],
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Expense',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Income',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            '\₹${totalIncome.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              fontSize: 24,
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        '\₹${totalExpense.toStringAsFixed(2)}',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Colors.red,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Expense',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            '\₹${totalExpense.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              fontSize: 24,
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -275,48 +289,68 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Today's Date
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Today',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white70,
+                  
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Today',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white70,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        todayDate,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                        const SizedBox(height: 8),
+                        Text(
+                          todayDate,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  
+                  const SizedBox(
+                    height: 60,
+                    child: VerticalDivider(
+                      color: Colors.blue,
+                      thickness: 2,
+                      width: 10,
+                    ),
                   ),
                   // Income for Today
+                  
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Income',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white70,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Income',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white70,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        '₹${dailyIncome.toStringAsFixed(2)}',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
+                        const SizedBox(height: 8),
+                        Text(
+                          '₹${dailyIncome.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                  
+                  const SizedBox(
+                    height: 60,
+                    child: VerticalDivider(
+                      color: Colors.blue,
+                      thickness: 2,
+                      width: 10,
+                    ),
                   ),
                   // Expense for Today
                   Column(
@@ -352,7 +386,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 10),
+            //const SizedBox(height: 10),
             Expanded(
               child: ListView(
                 children: transactionsByDate.entries
@@ -360,19 +394,43 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         entry.key ==
                         DateFormat('yyyy-MM-dd').format(DateTime.now()))
                     .map((entry) {
-                  final date = entry.key;
                   final transactions = entry.value;
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 10),
                       ...transactions.map((transaction) {
-                        return TransactionCard(
-                          title: transaction['title'],
-                          subtitle: transaction['subtitle'],
-                          amount: transaction['amount'],
-                          isIncome: transaction['type'] == 'Income',
+                        return Dismissible(
+                          key: Key(transaction['id']
+                              .toString()), // Unique key for each transaction
+                          direction: DismissDirection.endToStart,
+                          background: Container(
+                            color: Colors.red,
+                            alignment: Alignment.centerRight,
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: const Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                            ),
+                          ),
+                          onDismissed: (direction) async {
+                            await _dbHelper.deleteTransaction(transaction['id']);
+                            fetchTransactions();
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Transaction "${transaction['title']}" deleted'),
+                              ),
+                            );
+                          },
+                          child: TransactionCard(
+                            title: transaction['title'],
+                            subtitle: transaction['subtitle'],
+                            amount: transaction['amount'],
+                            isIncome: transaction['type'] == 'Income',
+                          ),
                         );
                       }).toList(),
                       const SizedBox(height: 20),

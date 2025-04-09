@@ -146,11 +146,41 @@ class _RecordScreenState extends State<RecordScreen> {
                         itemBuilder: (context, transactionIndex) {
                           Map<String, dynamic> transaction =
                               monthTransactions[transactionIndex];
-                          return TransactionCard(
-                            title: transaction['title'],
-                            subtitle: transaction['subtitle'] ?? '',
-                            amount: transaction['amount'],
-                            isIncome: transaction['type'] == 'Income',
+                          return Dismissible(
+                            key: Key(transaction['id'].toString()),
+                            direction: DismissDirection.endToStart,
+                            background: Container(
+                              color: Colors.red,
+                              alignment: Alignment.centerRight,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: const Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
+                            ),
+                            onDismissed: (direction) async {
+                              // Delete the transaction from the database
+                              await _dbHelper
+                                  .deleteTransaction(transaction['id']);
+
+                              // Refresh the transactions
+                              fetchTransactions();
+
+                              // Show a snackbar
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'Transaction "${transaction['title']}" deleted'),
+                                ),
+                              );
+                            },
+                            child: TransactionCard(
+                              title: transaction['title'],
+                              subtitle: transaction['subtitle'] ?? '',
+                              amount: transaction['amount'],
+                              isIncome: transaction['type'] == 'Income',
+                            ),
                           );
                         },
                       ),

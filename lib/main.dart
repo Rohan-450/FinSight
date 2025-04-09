@@ -4,6 +4,7 @@ import 'package:finsight/screens/email_verify.dart';
 import 'package:finsight/screens/login_screen.dart';
 import 'package:finsight/screens/records_screen.dart';
 import 'package:finsight/screens/register_screen.dart';
+import 'package:finsight/screens/splash_screen.dart';
 import 'package:finsight/screens/transaction_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -21,12 +22,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'FinSight',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
         primaryColor: Colors.white,
         scaffoldBackgroundColor: const Color.fromARGB(206, 2, 10, 27),
       ),
-      initialRoute: '/home', // Set the initial route
+      initialRoute: '/login', // Set the initial route
       routes: {
+        '/': (context) => const SplashScreen(), // Splash screen route
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/email-verify': (context) => const EmailVerification(),
@@ -80,11 +83,11 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.swap_horiz),
-            label: 'Transaction',
+            label: 'Transactions',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.receipt),
-            label: 'Record',
+            label: 'Records',
           ),
         ],
       ),
