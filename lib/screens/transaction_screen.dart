@@ -26,7 +26,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
             // Header Section
             Container(
               padding: const EdgeInsets.only(
-                  left: 55.0, right: 20.0, top: 60.0, bottom: 20.0),
+                  left: 20.0, right: 20.0, top: 60.0, bottom: 20.0),
               decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 21, 20, 57),
                 borderRadius: BorderRadius.only(
@@ -34,18 +34,15 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   bottomRight: Radius.circular(25.0),
                 ),
               ),
-              child: Row(
-                children: [
-                  const SizedBox(width: 40),
-                  const Text(
-                    'Add Transaction',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+              child: Center(
+                child: const Text(
+                  'Add Transaction',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
-                ],
+                ),
               ),
             ),
             
@@ -56,47 +53,62 @@ class _TransactionScreenState extends State<TransactionScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 15),
 
                   // Amount Input Field
                   Container(
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 21, 20, 57),
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: Colors.grey.withOpacity(0.3),
                         width: 1,
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 5,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: TextField(
                       controller: _amountController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         labelText: 'Amount',
-                        labelStyle: TextStyle(color: Colors.white),
-                        prefixIcon: Icon(Icons.currency_rupee, color: Colors.white),
+                        labelStyle: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14),
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        prefixIcon: Icon(Icons.currency_rupee, color: Colors.white.withOpacity(0.8), size: 20),
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.all(20),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                       ),
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 16),
 
                   // Transaction Type Selector
                   Container(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 21, 20, 57),
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: Colors.grey.withOpacity(0.3),
                         width: 1,
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 5,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -105,14 +117,14 @@ class _TransactionScreenState extends State<TransactionScreen> {
                           children: [
                             Icon(
                               Icons.swap_horiz,
-                              color: Colors.white,
-                              size: 24,
+                              color: Colors.white.withOpacity(0.8),
+                              size: 20,
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: 10),
                             Text(
                               'Transaction Type',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -120,12 +132,12 @@ class _TransactionScreenState extends State<TransactionScreen> {
                           ],
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            color: (_transactionType == 'Income' ? Colors.green : Colors.red).withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(20),
+                            color: (_transactionType == 'Income' ? Colors.green : Colors.red).withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: (_transactionType == 'Income' ? Colors.green : Colors.red).withOpacity(0.3),
+                              color: (_transactionType == 'Income' ? Colors.green : Colors.red).withOpacity(0.4),
                               width: 1,
                             ),
                           ),
@@ -136,20 +148,21 @@ class _TransactionScreenState extends State<TransactionScreen> {
                             icon: Icon(
                               Icons.keyboard_arrow_down,
                               color: _transactionType == 'Income' ? Colors.green : Colors.red,
+                              size: 18,
                             ),
                             items: const [
                               DropdownMenuItem(
                                 value: 'Income',
                                 child: Text(
                                   'Income',
-                                  style: TextStyle(color: Colors.green, fontSize: 16, fontWeight: FontWeight.w600),
+                                  style: TextStyle(color: Colors.green, fontSize: 14, fontWeight: FontWeight.w600),
                                 ),
                               ),
                               DropdownMenuItem(
                                 value: 'Expense',
                                 child: Text(
                                   'Expense',
-                                  style: TextStyle(color: Colors.red, fontSize: 16, fontWeight: FontWeight.w600),
+                                  style: TextStyle(color: Colors.red, fontSize: 14, fontWeight: FontWeight.w600),
                                 ),
                               ),
                             ],
@@ -163,78 +176,100 @@ class _TransactionScreenState extends State<TransactionScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 16),
 
                   // Title Input Field
                   Container(
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 21, 20, 57),
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: Colors.grey.withOpacity(0.3),
                         width: 1,
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 5,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: TextField(
                       controller: _titleController,
                       decoration: InputDecoration(
                         labelText: 'Title',
-                        labelStyle: TextStyle(color: Colors.white),
-                        prefixIcon: Icon(Icons.title, color: Colors.white),
+                        labelStyle: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14),
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        prefixIcon: Icon(Icons.title, color: Colors.white.withOpacity(0.8), size: 20),
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.all(20),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                       ),
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 16),
 
                   // Subtitle Input Field
                   Container(
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 21, 20, 57),
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: Colors.grey.withOpacity(0.3),
                         width: 1,
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 5,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: TextField(
                       controller: _subtitleController,
                       decoration: InputDecoration(
                         labelText: 'Description',
-                        labelStyle: TextStyle(color: Colors.white),
-                        prefixIcon: Icon(Icons.description, color: Colors.white),
+                        labelStyle: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 14),
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        prefixIcon: Icon(Icons.description, color: Colors.white.withOpacity(0.8), size: 20),
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.all(20),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                       ),
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 28),
 
                   // Save Button
                   Container(
                     width: double.infinity,
-                    height: 55,
+                    height: 48,
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 21, 20, 57),
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.blue.withOpacity(0.3),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                       ),
                       onPressed: () async {
@@ -290,13 +325,13 @@ class _TransactionScreenState extends State<TransactionScreen> {
                           Icon(
                             Icons.save,
                             color: Colors.white,
-                            size: 24,
+                            size: 20,
                           ),
-                          SizedBox(width: 12),
+                          SizedBox(width: 10),
                           Text(
                             'Save Transaction',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
                             ),

@@ -113,14 +113,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(
-            left: 16.0, right: 16.0, top: 0.0, bottom: 16.0),
+            left: 12.0, right: 12.0, top: 0.0, bottom: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //Monthly Summary Card
             Container(
               padding: const EdgeInsets.only(
-                  left: 20.0, right: 20.0, top: 40.0, bottom: 20.0),
+                  left: 12.0, right: 12.0, top: 40.0, bottom: 20.0),
               decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 21, 20, 57),
                 borderRadius: BorderRadius.only(
@@ -150,7 +150,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.calendar_month,
                               color: Colors.white70,
                               size: 20,
@@ -275,15 +275,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                           child: Column(
                             children: [
-                              Row(
+                              const Row(
                                 children: [
                                   Icon(
                                     Icons.trending_up,
                                     color: Colors.green,
                                     size: 24,
                                   ),
-                                  const SizedBox(width: 8),
-                                  const Text(
+                                  SizedBox(width: 8),
+                                  Text(
                                     'Income',
                                     style: TextStyle(
                                       fontSize: 18,
@@ -320,15 +320,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                           child: Column(
                             children: [
-                              Row(
+                              const Row(
                                 children: [
                                   Icon(
                                     Icons.trending_down,
                                     color: Colors.red,
                                     size: 24,
                                   ),
-                                  const SizedBox(width: 8),
-                                  const Text(
+                                  SizedBox(width: 8),
+                                  Text(
                                     'Expense',
                                     style: TextStyle(
                                       fontSize: 18,
@@ -356,17 +356,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 15),
             // Daily Summary Section
-            Row(
+            const Row(
               children: [
                 Icon(
                   Icons.today,
                   color: Colors.white,
                   size: 28,
                 ),
-                const SizedBox(width: 8),
-                const Text(
+                SizedBox(width: 8),
+                Text(
                   'Daily Summary',
                   style: TextStyle(
                     fontSize: 26,
@@ -378,6 +378,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             const SizedBox(height: 12),
             Container(
+              margin: const EdgeInsets.all(0.0),
               padding: const EdgeInsets.all(12.0),
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 21, 20, 57),
@@ -389,7 +390,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Expanded(
                     flex: 2,
                     child: Container(
-                      padding: const EdgeInsets.all(9),
+                      padding: const EdgeInsets.all(7),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(15),
@@ -494,17 +495,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 28),
-            // All Transactions Section
-            Row(
+            const SizedBox(height: 20), // All Transactions Section
+            const Row(
               children: [
                 Icon(
                   Icons.receipt_long,
                   color: Colors.white,
                   size: 28,
                 ),
-                const SizedBox(width: 8),
-                const Text(
+                SizedBox(width: 8),
+                Text(
                   'Today\'s Transactions',
                   style: TextStyle(
                     fontSize: 26,
