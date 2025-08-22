@@ -9,9 +9,9 @@ class SplashScreen extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.popAndPushNamed(context, '/home');
       } else {
-        Navigator.pushReplacementNamed(context, '/login');
+        Navigator.popAndPushNamed(context, '/login');
       }
     });
 

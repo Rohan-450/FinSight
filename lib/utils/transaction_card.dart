@@ -16,43 +16,69 @@ class TransactionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: const Color.fromARGB(255, 21, 20, 57),
-      margin: const EdgeInsets.only(bottom: 10),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 2),
+      padding: const EdgeInsets.fromLTRB(12, 12, 16, 12),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 21, 20, 57),
+        borderRadius: BorderRadius.circular(16),
       ),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: isIncome ? Colors.green : Colors.red,
-          child: Icon(
-            isIncome ? Icons.attach_money : Icons.attach_money,
-            color: Colors.white,
+      child: Row(
+        children: [
+          // Icon container
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: (isIncome ? Colors.green : Colors.red).withOpacity(0.15),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: (isIncome ? Colors.green : Colors.red).withOpacity(0.4),
+                width: 1,
+              ),
+            ),
+            child: Icon(
+              isIncome ? Icons.trending_up : Icons.trending_down,
+              color: isIncome ? Colors.green : Colors.red,
+              size: 24,
+            ),
           ),
-        ),
-        title: Text(
-          title,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
+          const SizedBox(width: 16),
+          // Transaction details
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.7),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        subtitle: Text(
-          subtitle,
-          style: const TextStyle(
-            color: Colors.white70,
-            fontSize: 18,
+          // Amount
+          Text(
+            '₹${amount.toStringAsFixed(2)}',
+            style: TextStyle(
+              color: isIncome ? Colors.green : Colors.red,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
           ),
-        ),
-        trailing: Text(
-          '${isIncome ? '+' : '-'}${amount.toStringAsFixed(2)}',
-          style: TextStyle(
-            color: isIncome ? Colors.green : Colors.red,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
+        ],
       ),
     );
   }
